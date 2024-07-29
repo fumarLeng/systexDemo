@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="tw">
+<head>
+    <title>會員登入!!</title>
+    <link rel="stylesheet"
+          href="/css/myStyle.css">
+</head>
+<meta charset="UTF-8">
+<body>
+<h2 style="color: burlywood;" >會員登入!!</h2>
+<form action="/login" method="post">
+    <div th:if="${error}" th:text="${error}" style="color: red;"></div>
+    <div th:if="${msg}" th:text="${msg}" style="color: red;"></div>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+
+</form>
+
+<div><a href="/register">新增帳號?</a></div>
+</body>
+</html>

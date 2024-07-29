@@ -1,0 +1,19 @@
+@charset "UTF-8";
+body{
+	background-color: beige;
+	text-align: center;
+	margin: auto;
+}
+table{
+	margin: auto;
+	background-color: red;
+}
+
+input[type="text"],
+input[type="password"] {
+	width: auto;
+	padding: 0.5rem;
+	border: 1px solid darkturquoise;
+	border-radius: 4px;
+	font-size: 1rem;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>註冊</title>
+    <link rel="stylesheet" href="/css/myStyle.css">
+</head>
+
+<meta charset="UTF-8">
+<body>
+<h2 style="color: burlywood;">註冊會員</h2>
+<form action="/register/add" th:object="${users}" method="post">
+    <div th:if="${error}" th:text="${error}" style="color: red;"></div>
+    <div>
+        <label for="username">會員名稱：</label>
+        <input type="text" id="username" th:field="*{username}" required>
+    </div>
+    <div>
+        <label for="password">密碼：</label>
+        <input type="password" id="password" th:field="*{password}" required>
+    </div>
+    <div>
+        <label for="age">年紀：</label>
+        <input type="text" id="age" th:field="*{age}" required>
+    </div>
+    <div>
+        <button type="submit">註冊</button>
+    </div>
+</form>
+<div>
+    <a href="/">已有帳號？點此登入</a>
+</div>
+</body>
+</html>
