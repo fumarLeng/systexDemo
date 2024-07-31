@@ -17,7 +17,7 @@ public class LoginController {
     @Autowired
     private HttpSession httpSession;
 
-    @GetMapping("/")
+    @GetMapping({"/", "/login"})
     public String login() {
         return "login";
     }
@@ -26,7 +26,7 @@ public class LoginController {
     public String login(@RequestParam String username, @RequestParam String password, Model model) {
         if (userService.checkUser(username, password)) {
             httpSession.setAttribute("username", username);
-            System.out.println(httpSession.getAttribute("username"));
+            model.addAttribute("username", username);
             return "loginSuccess";
         } else {
             model.addAttribute("error", "密碼錯誤");
@@ -35,18 +35,20 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session, Model model) {
-        session.invalidate();
+    public String logout(Model model) {
+        httpSession.invalidate();
         model.addAttribute("msg", "您已成功登出");
         return "login";
     }
 
     @GetMapping("/loginSuccess")
-    public String loginSuccess(HttpSession session, Model model) {
-        if (session.getAttribute("username") == null) {
-            model.addAttribute("error", "請先登入");
-            return "login";
-        }
+    public String loginSuccess(Model model) {
+//        String username = httpSession.getAttribute("username").toString();
+//        if (username== null) {
+//            model.addAttribute("error", "請先登入");
+//            return "login";
+//        }
+//        model.addAttribute("username",username);
         return "loginSuccess";
     }
 
