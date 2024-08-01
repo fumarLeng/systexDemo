@@ -14,41 +14,31 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private HttpSession httpSession;
 
     @GetMapping({"/", "/login"})
-    public String login() {
+    public String login(HttpSession session, Model model) {
+        if(session.getAttribute("error") != null) {
+            model.addAttribute("error", session.getAttribute("error"));
+        }
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        if (userService.checkUser(username, password)) {
-            httpSession.setAttribute("username", username);
-            model.addAttribute("username", username);
+    public String login(@RequestParam String username, @RequestParam String password, Model model , HttpSession httpSession) {
             return "loginSuccess";
-        } else {
-            model.addAttribute("error", "密碼錯誤");
-            return "login";
-        }
     }
 
     @GetMapping("/logout")
-    public String logout(Model model) {
+    public String logout(Model model, HttpSession httpSession) {
         httpSession.invalidate();
         model.addAttribute("msg", "您已成功登出");
         return "login";
     }
 
     @GetMapping("/loginSuccess")
-    public String loginSuccess(Model model) {
-//        String username = httpSession.getAttribute("username").toString();
-//        if (username== null) {
-//            model.addAttribute("error", "請先登入");
-//            return "login";
-//        }
-//        model.addAttribute("username",username);
+    public String loginSuccess(Model model , HttpSession httpSession) {
+        Users user =  (Users)httpSession.getAttribute("user");
+        model.addAttribute("user", user);
         return "loginSuccess";
     }
 

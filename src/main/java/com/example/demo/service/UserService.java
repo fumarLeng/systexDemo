@@ -11,12 +11,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean checkUser(String username, String password) {
+    public Users checkUser(String username, String password) {
         Users user = userRepository.findByUsername(username);
-        if(user == null){
-            return false;
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
         }
-        return user.getPassword().equals(password);
+        return null;
     }
 
     public Integer addUser(Users user) {
@@ -24,11 +24,11 @@ public class UserService {
     }
 
     public boolean hasUser(String username) {
-         Users user = userRepository.findByUsername(username);
-         if(user == null){
-             return false;
-         }
-         return true;
+        Users user = userRepository.findByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        return true;
     }
 
 

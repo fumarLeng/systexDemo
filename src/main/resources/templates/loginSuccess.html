@@ -1,25 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="tw">
-<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>登入成功頁面</title>
+        <style>
+
+            body {
+                background-color: beige;
+                text-align: center;
+                margin: auto;
+            }
+
+            table {
+                margin: auto;
+                border-collapse: collapse;
+                border: 2px solid rgb(140 140 140);
+                font-family: sans-serif;
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+            }
+
+            caption {
+                caption-side: bottom;
+                padding: 10px;
+                font-weight: bold;
+            }
+
+            thead,
+            tfoot {
+                background-color: rgb(228 240 245);
+            }
+
+            th,
+            td {
+                border: 1px solid rgb(160 160 160);
+                padding: 8px 10px;
+            }
+
+            td:last-of-type {
+                text-align: center;
+            }
+
+            tbody > tr:nth-of-type(even) {
+                background-color: rgb(237 238 242);
+            }
+
+            tfoot th {
+                text-align: right;
+            }
+
+            tfoot td {
+                font-weight: bold;
+            }
+
+
+        </style>
+    </head>
+
     <meta charset="UTF-8">
-    <title>登入成功頁面</title>
-    <style>
-
-        body {
-            background-color: beige;
-            text-align: center;
-            margin: auto;
-        }
-
-    </style>
-</head>
-
-<meta charset="UTF-8">
-<body>
-    <h2>登入成功 : 歡迎 <span th:text="${username}"></span>!</h2>
-
-    <form action="/logout" method="get">
-        <button type="submit">Logout</button>
-    </form>
-</body>
+    <body>
+        <h2>登入成功 : 歡迎 <span th:text="${user.username}"></span>!</h2>
+        <h3>使用者資訊:</h3>
+        <table>
+            <tr>
+                <th>欄位</th>
+                <th>資訊</th>
+            </tr>
+            <tr>
+                <td>年紀</td>
+                <td th:text="${user.age}"></td>
+            </tr>
+            <tr>
+                <td>地址</td>
+                <td th:text="${user.address}"></td>
+            </tr>
+            <tr>
+                <td>電話</td>
+                <td th:text="${user.phone}"></td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td th:text="${user.email}"></td>
+            </tr>
+        </table>
+        <br>
+        <form action="/logout" method="get">
+            <button type="submit">登出</button>
+        </form>
+    </body>
 </html>
