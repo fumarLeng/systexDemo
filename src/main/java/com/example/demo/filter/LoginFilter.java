@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 public class LoginFilter implements Filter {
 
-    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout"));
+    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout" ));
 
     @Autowired
     private UserService userService;
@@ -49,7 +49,7 @@ public class LoginFilter implements Filter {
         }
 
         if (sessionUsername == null) {
-            if (url.equals("/login")) {
+            if (url.equals("/login") || url.equals("/ajax/login")) {
 
                 Users user = userService.checkUser(username, password);
                 if (user != null) {
