@@ -38,29 +38,35 @@
 </div>
 
 <script>
-    $(document).ready(function() {
         $('#loginBtn').click(function() {
             let username = $('#username').val();
             let password = $('#password').val();
 
+            console.log("1");
             $.ajax({
                 url: '/ajax/login',
                 method: 'GET',
                 data: { username: username, password: password },
                 dataType: 'json',
                 success: function(response) {
+                    console.log("1");
+                    console.log(response);
+                    console.log("2");
                     if (typeof response === 'object') {
                         if (!response.success) {
                             $('#message').html('<div class="alert alert-danger">' + response.error + '</div>');
+                        }else{
+                            location.href="/loginSuccess";
                         }
                     }
                 },
                 error: function(xhr, status, error) {
+                    console.log("3");
                     $('#message').html('<div class="alert alert-danger">登入失敗，請稍後再試。</div>');
                 }
             });
         });
-    });
+
 </script>
 </body>
 </html>

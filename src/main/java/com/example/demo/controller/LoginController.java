@@ -37,6 +37,9 @@ public class LoginController {
     public String loginSuccess(Model model, HttpSession httpSession) {
         System.out.println("進來loginSuccess了");
         Users user = (Users) httpSession.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("user", user);
         System.out.println("放好user了 : " + user);
         return "loginSuccess";

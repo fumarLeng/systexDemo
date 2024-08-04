@@ -36,7 +36,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
-        log.info("Request URL: {}", url);
+//        log.info("Request URL: {}", url);
 
         if (isExcluded(url)) {
             filterChain.doFilter(request, response);
@@ -44,22 +44,19 @@ public class LoginFilter implements Filter {
         }
 
         Object sessionUsername = request.getSession().getAttribute("username");
-        log.info("sessionUsername: {} ", sessionUsername);
+//        log.info("sessionUsername: {} ", sessionUsername);
 
-
-        if (sessionUsername == null) {
-            if (url.equals("/login")) {
-                handleThymeleafLogin(request, response);
-            } else if (url.equals("/ajax/login")) {
-                handleAjaxLogin(request, response);
-            } else if (url.equals("/loginSuccess")) {
-                handleThymeleafLogin(request, response);
-            }else {
-                filterChain.doFilter(request, response);
-            }
+//        if (sessionUsername == null) {
+        if (url.equals("/login")) {
+            handleThymeleafLogin(request, response);
+        } else if (url.equals("/ajax/login")) {
+            handleAjaxLogin(request, response);
         } else {
             filterChain.doFilter(request, response);
         }
+//        } else {
+//            filterChain.doFilter(request, response);
+//        }
     }
 
     @Override
@@ -100,8 +97,10 @@ public class LoginFilter implements Filter {
         if (user != null) {
             session.setAttribute("username", username);
             session.setAttribute("user", user);
-            System.out.println("handleAjaxLogin 成功!!" );
-            request.getRequestDispatcher("/loginSuccess").forward(request, response);
+            System.out.println("handleAjaxLogin 成功!!");
+            response.setStatus(200);
+            response.getWriter().write("{\"success\": true}");
+//            request.getRequestDispatcher("/loginSuccess").forward(request, response);
         } else {
             response.getWriter().write("{\"success\": false, \"error\": Wrong account password\"\"}");
         }
