@@ -72,7 +72,7 @@ public class LoginFilter implements Filter {
         return excludedUrls.contains(url);
     }
 
-    private void handleThymeleafLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void handleThymeleafLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
@@ -83,7 +83,7 @@ public class LoginFilter implements Filter {
         if (user != null) {
             session.setAttribute("username", username);
             session.setAttribute("user", user);
-            response.sendRedirect("/loginSuccess");
+            request.getRequestDispatcher("/loginSuccess").forward(request, response);
         } else {
             session.setAttribute("error", "帳號或密碼錯誤");
             response.sendRedirect("/");

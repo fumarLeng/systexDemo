@@ -33,12 +33,12 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/loginSuccess")
+    @RequestMapping(value = "/loginSuccess", method = {RequestMethod.GET,RequestMethod.POST})
     public String loginSuccess(Model model, HttpSession httpSession) {
         System.out.println("進來loginSuccess了");
         Users user = (Users) httpSession.getAttribute("user");
         model.addAttribute("user", user);
-        System.out.println("放好user了");
+        System.out.println("放好user了 : " + user);
         return "loginSuccess";
     }
 
