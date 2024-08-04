@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="tw">
-    <head>
-        <meta charset="UTF-8">
-        <title>會員登入!!</title>
-        <style>
+<head>
+    <meta charset="UTF-8">
+    <title>會員登入!!</title>
+    <style>
 
-            body {
-                background-color: beige;
-                text-align: center;
-                margin: auto;
-            }
+        body {
+            background-color: beige;
+            text-align: center;
+            margin: auto;
+        }
 
-            input[type="text"],
-            input[type="password"] {
-                width: auto;
-                padding: 0.5rem;
-                border: 2px solid darkturquoise;
-                border-radius: 4px;
-                font-size: 1rem;
-            }
+        input[type="text"],
+        input[type="password"] {
+            width: auto;
+            padding: 0.5rem;
+            border: 2px solid darkturquoise;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
 
-        </style>
-    </head>
-    <body>
-        <h2 style="color: burlywood;">會員登入!!</h2>
-        <form action="/login" method="post">
-            <div th:if="${error}" th:text="${error}" style="color: red;"></div>
-            <div th:if="${msg}" th:text="${msg}" style="color: red;"></div>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <br>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <br>
-            <div>
-                <button type="submit">Login</button>
-            </div>
-        </form>
-        <br>
-        <div><a href="/register">新增帳號?</a></div>
-        <div><a href="/loginSuccess">測試登入成功才能訪問的頁面</a></div>
-    </body>
+    </style>
+</head>
+<body>
+<h2 style="color: burlywood;">會員登入!!</h2>
+<form action="/login" method="post">
+    <div th:if="${error}" th:text="${error}" style="color: red;"></div>
+    <div th:if="${msg}" th:text="${msg}" style="color: red;"></div>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <br>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+</form>
+<br>
+<div><a href="/register">新增帳號?</a></div>
+<div><a href="/loginSuccess">測試登入成功才能訪問的頁面</a></div>
+<div><a href="/loginAjax.html">AJAX 登入測試</a></div>
+</body>
 </html>

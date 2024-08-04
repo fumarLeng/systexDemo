@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 public class LoginFilter implements Filter {
 
-    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout" ));
+    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout", "/loginAjax.html"));
 
     @Autowired
     private UserService userService;
@@ -35,39 +35,31 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession();
         String url = request.getRequestURI();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-//        log.info("Request URL: {}", url);
-        Object sessionUsername = request.getSession().getAttribute("username");
+        log.info("Request URL: {}", url);
 
-//        log.info("sessionUsername : {}", sessionUsername);
         if (isExcluded(url)) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        Object sessionUsername = request.getSession().getAttribute("username");
+        log.info("sessionUsername: {} ", sessionUsername);
+
+
         if (sessionUsername == null) {
-            if (url.equals("/login") || url.equals("/ajax/login")) {
-
-                Users user = userService.checkUser(username, password);
-                if (user != null) {
-                    session.setAttribute("username", username);
-                    session.setAttribute("user", user);
-                    response.sendRedirect("/loginSuccess");
-                } else {
-                    session.setAttribute("error", "帳號或密碼錯誤");
-                    response.sendRedirect("/");
-                }
-            } else {
-                response.sendRedirect("/");
+            if (url.equals("/login")) {
+                handleThymeleafLogin(request, response);
+            } else if (url.equals("/ajax/login")) {
+                handleAjaxLogin(request, response);
+            } else if (url.equals("/loginSuccess")) {
+                handleThymeleafLogin(request, response);
+            }else {
+                filterChain.doFilter(request, response);
             }
-
         } else {
             filterChain.doFilter(request, response);
         }
-
     }
 
     @Override
@@ -79,4 +71,40 @@ public class LoginFilter implements Filter {
     public Boolean isExcluded(String url) {
         return excludedUrls.contains(url);
     }
+
+    private void handleThymeleafLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+
+        Users user = userService.checkUser(username, password);
+        log.info("User: {}", user);
+
+        if (user != null) {
+            session.setAttribute("username", username);
+            session.setAttribute("user", user);
+            response.sendRedirect("/loginSuccess");
+        } else {
+            session.setAttribute("error", "帳號或密碼錯誤");
+            response.sendRedirect("/");
+        }
+    }
+
+    private void handleAjaxLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+
+        Users user = userService.checkUser(username, password);
+        System.out.println("handleAjaxLogin :　" + user);
+        if (user != null) {
+            session.setAttribute("username", username);
+            session.setAttribute("user", user);
+            System.out.println("handleAjaxLogin 成功!!" );
+            request.getRequestDispatcher("/loginSuccess").forward(request, response);
+        } else {
+            response.getWriter().write("{\"success\": false, \"error\": Wrong account password\"\"}");
+        }
+    }
 }
+
