@@ -1,81 +1,104 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login AJAX</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body class="d-flex align-items-center  min-vh-100  bg-black">
-<div class="container-fluid " style="width: 650px; max-width: 100%">
-    <div class="text-center mb-4">
-        <h2 class="text-light">AJAX登入測試</h2>
-    </div>
-
-    <div class="row justify-content-center ">
-        <div class="col-md-10">
-            <div class="form-floating mb-4">
-                <input type="text" class="form-control" id="username" placeholder="Username">
-                <label for="username">Username</label>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login AJAX</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body class="d-flex align-items-center  min-vh-100 " style="background-color:beige">
+        <div class="container-fluid " style="width: 400px">
+            <div class="text-center ">
+                <h2 class="text-black">AJAX登入測試</h2>
             </div>
 
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" placeholder="Password">
-                <label for="password">Password</label>
-            </div>
+            <div class="row justify-content-center ">
 
-            <div class="d-grid">
-                <button class="w-100 btn btn-lg btn-primary" id="loginBtn">登入</button>
-            </div>
+                <div class="flex-column">
 
-            <div id="message" class="mt-3"></div>
-            <div class="row mt-1">
-                <div class="col-4 text-center">
-                    <a href="/register" class="btn btn-success w-900">新增帳號?</a>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" id="username" placeholder="Username">
+                        <label for="username">Username</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                        <label for="password">Password</label>
+                    </div>
+
                 </div>
-                <div class="col-4 text-center">
-                    <a href="/loginSuccess" class="btn btn-success w-140">登入成功頁面</a>
+
+                <button class="btn btn-bg btn-primary" style="width: 380px" id="loginBtn">登入</button>
+                <div id="message" class="mt-3"></div>
+
+                <div class="d-flex justify-content-around">
+                    <a href="/register" class="btn btn-success">新增帳號?</a>
+                    <a href="/loginSuccess" class="btn btn-warning">登入成功頁面</a>
+                    <a href="/login" class="btn btn-danger">原來登入測試</a>
                 </div>
-                <div class="col-4 text-center">
-                    <a href="/login" class="btn btn-success  w-140">原來登入測試</a>
+
+                <div class="d-flex justify-content-around mt-3">
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-danger" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-dark" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                 </div>
+
             </div>
+
         </div>
-    </div>
 
-</div>
+        <script>
+            $('#loginBtn').click(function () {
+                let username = $('#username').val();
+                let password = $('#password').val();
 
-<script>
-        $('#loginBtn').click(function() {
-            let username = $('#username').val();
-            let password = $('#password').val();
-
-            console.log("1");
-            $.ajax({
-                url: '/ajax/login',
-                method: 'GET',
-                data: { username: username, password: password },
-                dataType: 'json',
-                success: function(response) {
-                    console.log("1");
-                    console.log(response);
-                    console.log("2");
-                    if (typeof response === 'object') {
-                        if (!response.success) {
-                            $('#message').html('<div class="alert alert-danger">' + response.error + '</div>');
-                        }else{
-                            location.href="/loginSuccess";
+                // console.log("1");
+                $.ajax({
+                    url: '/ajax/login',
+                    method: 'GET',
+                    data: {username: username, password: password},
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log("1");
+                        // console.log(response);
+                        // console.log("2");
+                        if (typeof response === 'object') {
+                            if (!response.success) {
+                                $('#message').html('<div class="alert alert-danger">' + response.error + '</div>');
+                            } else {
+                                location.href = "/loginSuccess";
+                            }
                         }
+                    },
+                    error: function (xhr, status, error) {
+                        // console.log("3");
+                        $('#message').html('<div class="alert alert-danger">登入失敗，請稍後再試。</div>');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.log("3");
-                    $('#message').html('<div class="alert alert-danger">登入失敗，請稍後再試。</div>');
-                }
+                });
             });
-        });
 
-</script>
-</body>
+        </script>
+    </body>
 </html>

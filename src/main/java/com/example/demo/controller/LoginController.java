@@ -45,6 +45,12 @@ public class LoginController {
         return "loginSuccess";
     }
 
+    @GetMapping("/test")
+    @ResponseBody
+    public String test(String test) {
+        return "test ok";
+    }
+
 }
 
 

@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 public class LoginFilter implements Filter {
 
-    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout", "/loginAjax.html"));
+    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout", "/loginAjax.html","test"));
 
     @Autowired
     private UserService userService;
