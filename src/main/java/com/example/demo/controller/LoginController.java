@@ -14,6 +14,7 @@ public class LoginController {
 
     @GetMapping({"/", "/login"})
     public String login(HttpSession session, Model model) {
+        System.out.println("近來get的/login");
         if (session.getAttribute("error") != null) {
             model.addAttribute("error", session.getAttribute("error"));
         }
@@ -22,6 +23,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login() {
+        System.out.println("進來post的/login ");
         return "loginSuccess";
     }
 
@@ -41,7 +43,7 @@ public class LoginController {
             return "redirect:/login";
         }
         model.addAttribute("user", user);
-        System.out.println("放好user了 : " + user);
+        System.out.println("放好user了準備return : " + user);
         return "loginSuccess";
     }
 
