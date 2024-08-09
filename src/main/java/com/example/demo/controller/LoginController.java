@@ -49,7 +49,7 @@ public class LoginController {
 
     @GetMapping("/test")
     @ResponseBody
-    public String test(String test) {
+    public String test() {
         return "test ok";
     }
 

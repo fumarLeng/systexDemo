@@ -20,7 +20,7 @@ import java.util.*;
 @Component
 public class LoginFilter implements Filter {
 
-    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout", "/loginAjax.html","test"));
+    private final Set<String> excludedUrls = new HashSet<>(Set.of("/", "/register", "/register/add", "/static", "/logout", "/loginAjax.html"));
 
     @Autowired
     private UserService userService;
@@ -36,27 +36,23 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getRequestURI();
-//        log.info("Request URL: {}", url);
 
         if (isExcluded(url)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        Object sessionUsername = request.getSession().getAttribute("username");
-//        log.info("sessionUsername: {} ", sessionUsername);
-
-//        if (sessionUsername == null) {
         if (url.equals("/login")) {
             handleThymeleafLogin(request, response);
         } else if (url.equals("/ajax/login")) {
             handleAjaxLogin(request, response);
         } else {
-            filterChain.doFilter(request, response);
+            if (isUserLoggedIn(request)) {
+                filterChain.doFilter(request, response);
+            } else {
+                response.sendRedirect("/");
+            }
         }
-//        } else {
-//            filterChain.doFilter(request, response);
-//        }
     }
 
     @Override
@@ -69,14 +65,16 @@ public class LoginFilter implements Filter {
         return excludedUrls.contains(url);
     }
 
+    private boolean isUserLoggedIn(HttpServletRequest request) {
+        return request.getSession().getAttribute("user") != null;
+    }
+
     private void handleThymeleafLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
 
         Users user = userService.checkUser(username, password);
-        log.info("User: {}", user);
-
         if (user != null) {
             session.setAttribute("username", username);
             session.setAttribute("user", user);
@@ -87,7 +85,7 @@ public class LoginFilter implements Filter {
         }
     }
 
-    private void handleAjaxLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void handleAjaxLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HttpSession session = request.getSession();
@@ -100,7 +98,6 @@ public class LoginFilter implements Filter {
             System.out.println("handleAjaxLogin 成功!!");
             response.setStatus(200);
             response.getWriter().write("{\"success\": true}");
-//            request.getRequestDispatcher("/loginSuccess").forward(request, response);
         } else {
             response.getWriter().write("{\"success\": false, \"error\": Wrong account password\"\"}");
         }
